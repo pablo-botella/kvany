@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mkskill>
+  <version-spec params="major:byte,minor:[0-99],build:word">
+    <version major="0" minor="0" build="1" lock="major">
+      <ts>2026-09-26T16:15:16Z</ts>
+    </version>
+    <label key="title" volatile="true" default-to-ts="true">2026-09-26T16:15:16Z</label>
+    <create file="__publish.bat" git-ignore="true" eol="crlf">
+@echo off
+set TAG={$$$ version $$$}
+git rev-parse -q --verify refs/tags/%TAG% &gt;NUL 2&gt;&amp;1 &amp;&amp; goto :exists
+git ls-remote --exit-code --tags origin %TAG% &gt;NUL 2&gt;&amp;1 &amp;&amp; goto :exists
+git tag %TAG%
+git push origin main --tags
+exit /b 0
+:exists
+echo ERROR: tag %TAG% already exists - run -vinc first
+exit /b 1
+</create>
+  </version-spec>
+  <project id="main" name="kvany" project-type="Go-Module">
+    <meta>
+      <module>github.com/pablo-botella/kvany</module>
+      <license>MIT</license>
+      <description>Key/value pairs with any value for Go, kept in the order they came — Kv{K string; V any}, Lst []Kv and PtrLst, the Go side of the [[&#34;KEY&#34;, value], ...] JSON arrays exchanged with Xbase++ (ot4xb); keys are not normalized and may repeat, and PeekValuesToLst/PeekValuesToMap pick values out by flags (case, repeats, not-found). Use when working with github.com/pablo-botella/kvany.</description>
+    </meta>
+  </project>
+  <version-history max="10">
+    <release version="v0.0.1" ts="2026-09-26T16:15:16Z" title="2026-09-26T16:15:16Z" method="vset"></release>
+    <release version="v0.1.1" ts="2026-09-26T16:14:30Z" title="2026-09-26T16:14:30Z" method="vinc-build"></release>
+  </version-history>
+</mkskill>
