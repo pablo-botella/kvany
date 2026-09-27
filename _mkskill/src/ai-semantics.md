@@ -20,7 +20,10 @@ mkskill:
   came, or Cast to the type of defaultValue with PeekValuesCastToDefault
   (nil default = untouched); repeated key -> error unless DupeFirst /
   DupeLast / DupeArray. DupeArray returns a []any and is incompatible with
-  CastToDefault.
+  CastToDefault. VPeekString / Int / Float64 / Bool add the assertion:
+  the default comes back only for an absent key; a present value of the
+  wrong type gives the zero value and an error, never the default (a JSON
+  number is float64: VPeekInt on it needs the flag).
 - Cast: nil like → V untouched; nil V → zero of the wanted type; the result
   has the exact type of like (named types included). Integers: truncate by
   default, Round or FractionError by flag; text parsed unless ErrOnString;

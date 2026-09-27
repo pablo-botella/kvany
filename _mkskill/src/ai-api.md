@@ -14,6 +14,8 @@ type PtrLst []*Kv
 lst, err := l.PeekValuesToLst(keys []string, flags PeekValuesFlag)   // new Lst, source untouched
 m, err   := l.PeekValuesToMap(keys []string, flags PeekValuesFlag)   // the same folded into a map
 v, err   := l.VPeek(key string, opt CastFlags, defaultValue any)     // one value; the default when absent
+s, err   := l.VPeekString(key, opt, "")                              // VPeek + assertion; also VPeekInt,
+                                                                     // VPeekFloat64, VPeekBool
 v, err   := kv.Cast(like any, opt CastFlags)                        // V as the type of like
 
 // PeekValuesFlag (bitmask, OR them):

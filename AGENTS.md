@@ -20,6 +20,8 @@ type PtrLst []*Kv
 lst, err := l.PeekValuesToLst(keys []string, flags PeekValuesFlag)   // new Lst, source untouched
 m, err   := l.PeekValuesToMap(keys []string, flags PeekValuesFlag)   // the same folded into a map
 v, err   := l.VPeek(key string, opt CastFlags, defaultValue any)     // one value; the default when absent
+s, err   := l.VPeekString(key, opt, "")                              // VPeek + assertion; also VPeekInt,
+                                                                     // VPeekFloat64, VPeekBool
 v, err   := kv.Cast(like any, opt CastFlags)                        // V as the type of like
 
 // PeekValuesFlag (bitmask, OR them):
@@ -63,7 +65,10 @@ type CastFlags struct {
   came, or Cast to the type of defaultValue with PeekValuesCastToDefault
   (nil default = untouched); repeated key -> error unless DupeFirst /
   DupeLast / DupeArray. DupeArray returns a []any and is incompatible with
-  CastToDefault.
+  CastToDefault. VPeekString / Int / Float64 / Bool add the assertion:
+  the default comes back only for an absent key; a present value of the
+  wrong type gives the zero value and an error, never the default (a JSON
+  number is float64: VPeekInt on it needs the flag).
 - Cast: nil like → V untouched; nil V → zero of the wanted type; the result
   has the exact type of like (named types included). Integers: truncate by
   default, Round or FractionError by flag; text parsed unless ErrOnString;

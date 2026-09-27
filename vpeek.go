@@ -57,3 +57,44 @@ func (l Lst) VPeek(key string, opt CastFlags, defaultValue any) (any, error) {
 	}
 	return kv.Cast(defaultValue, opt)
 }
+
+func (l Lst) VPeekString(key string, opt CastFlags, defaultValue string) (string, error) {
+	val, err := l.VPeek(key, opt, defaultValue)
+	if err != nil {
+		return "", err
+	}
+	if s, ok := val.(string); ok {
+		return s, nil
+	}
+	return "", fmt.Errorf("kvany: VPeekString %q: value is not a string", key)
+}
+func (l Lst) VPeekInt(key string, opt CastFlags, defaultValue int) (int, error) {
+	val, err := l.VPeek(key, opt, defaultValue)
+	if err != nil {
+		return 0, err
+	}
+	if i, ok := val.(int); ok {
+		return i, nil
+	}
+	return 0, fmt.Errorf("kvany: VPeekInt %q: value is not an int", key)
+}
+func (l Lst) VPeekFloat64(key string, opt CastFlags, defaultValue float64) (float64, error) {
+	val, err := l.VPeek(key, opt, defaultValue)
+	if err != nil {
+		return 0, err
+	}
+	if f, ok := val.(float64); ok {
+		return f, nil
+	}
+	return 0, fmt.Errorf("kvany: VPeekFloat64 %q: value is not a float64", key)
+}
+func (l Lst) VPeekBool(key string, opt CastFlags, defaultValue bool) (bool, error) {
+	val, err := l.VPeek(key, opt, defaultValue)
+	if err != nil {
+		return false, err
+	}
+	if b, ok := val.(bool); ok {
+		return b, nil
+	}
+	return false, fmt.Errorf("kvany: VPeekBool %q: value is not a bool", key)
+}

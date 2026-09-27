@@ -30,3 +30,28 @@ them as a `[]any` (a single match too) - which cannot be cast, so it is
 incompatible with `CastToDefault`. The other Peek flags (output case,
 SkipNotFound) have no meaning here and are ignored. The rest of `opt` is
 the cast.
+
+Four typed forms save the assertion when the type is known:
+
+```go
+func (l Lst) VPeekString(key string, opt CastFlags, defaultValue string) (string, error)
+func (l Lst) VPeekInt(key string, opt CastFlags, defaultValue int) (int, error)
+func (l Lst) VPeekFloat64(key string, opt CastFlags, defaultValue float64) (float64, error)
+func (l Lst) VPeekBool(key string, opt CastFlags, defaultValue bool) (bool, error)
+```
+
+They are `VPeek` plus the assertion. `defaultValue` comes back only when
+the key is absent. When the key is there, with `PeekValuesCastToDefault`
+the value is converted first; without it the value must already be of
+that type, and when it is not the call returns the zero value (`""`, `0`,
+`false`) and an error ("value is not an int"), never the default. A
+number decoded from JSON is a `float64`, so `VPeekInt` on it needs the
+flag.
+
+| `VPeekInt("K", opt, 7)` | without the flag | with `CastToDefault` |
+|---|---|---|
+| key absent | 7 | 7 |
+| value `int` 4009 | 4009 | 4009 |
+| value `float64` 4009 | 0, error | 4009 |
+| value `"abc"` | 0, error | 0, error (not a number) |
+| value `nil` | 0, error | 0 (the zero value) |
