@@ -13,7 +13,7 @@ type PtrLst []*Kv
 
 lst, err := l.PeekValuesToLst(keys []string, flags PeekValuesFlag)   // new Lst, source untouched
 m, err   := l.PeekValuesToMap(keys []string, flags PeekValuesFlag)   // the same folded into a map
-v, err   := l.VPeek(key string, opt CastFlags, defaultValue any)     // one value, cast to the default's type
+v, err   := l.VPeek(key string, opt CastFlags, defaultValue any)     // one value; the default when absent
 v, err   := kv.Cast(like any, opt CastFlags)                        // V as the type of like
 
 // PeekValuesFlag (bitmask, OR them):
@@ -24,9 +24,10 @@ PeekValuesFirstFoundCase    // 0x11: output key = first found spelling      [ign
 PeekValuesLastFoundCase     // 0x21: output key = last found spelling       [ignored by VPeek]
 PeekValuesDupeFirst         // 0x1000: repeated key → first value
 PeekValuesDupeLast          // 0x2000: repeated key → last value
-PeekValuesDupeArray         // 0x4000: repeated key → one pair, V = []any (VPeek: a slice of the default's type)
+PeekValuesDupeArray         // 0x4000: repeated key → one pair, V = []any (VPeek: incompatible with CastToDefault)
 PeekValuesDupeError         // 0x8000: repeated key → error (VPeek: the default when no Dupe flag)
 PeekValuesSkipNotFound      // 0x10000: absent key adds nothing               [ignored by VPeek]
+PeekValuesCastToDefault     // 0x100000: VPeek only: Cast the value to the type of defaultValue
 
 // CastFlags: one structure for Cast and VPeek, grouped by the type asked for
 type CastFlags struct {

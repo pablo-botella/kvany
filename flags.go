@@ -17,6 +17,7 @@ const (
 	PeekValuesDupeArray       PeekValuesFlag = 0x00004000
 	PeekValuesDupeError       PeekValuesFlag = 0x00008000
 	PeekValuesSkipNotFound    PeekValuesFlag = 0x00010000 // Ignored by VPeek
+	PeekValuesCastToDefault   PeekValuesFlag = 0x00100000 // VPeek only: Cast the value to the type of the default
 
 )
 

@@ -10,24 +10,23 @@ mkskill:
 func (l Lst) VPeek(key string, opt CastFlags, defaultValue any) (any, error)
 ```
 
-The single-value question, with the cast built in: the value of `key`
-converted to the type of `defaultValue`, or `defaultValue` itself when the
-key is not there. The default is the sample of the wanted type, so the
-assertion on the result is safe; a `nil` default asks for no conversion
-and returns the value as it came.
+The single-value question: the value of `key`, or `defaultValue` when the
+key is not there. With `PeekValuesCastToDefault` in `opt.Peek` the value
+found is converted to the type of `defaultValue` through `Cast`, so the
+default is also the sample of the wanted type and the assertion on the
+result is safe; without the flag the value comes back as it came.
 
 ```go
-n, err := rec.VPeek("INUMB", kvany.CastFlags{}, int64(0))   // n.(int64), from 4009.0 or "4009"
-s, err := rec.VPeek("BCODE", kvany.CastFlags{String: kvany.CastStringOpt{
-	Flags: kvany.CastStringAllTrim | kvany.CastStringPadL, Width: 15}}, "")
-raw, err := rec.VPeek("ANY", kvany.CastFlags{}, nil)            // untouched
+raw, err := rec.VPeek("INUMB", kvany.CastFlags{}, nil)                 // 4009.0, untouched
+n, err := rec.VPeek("INUMB", kvany.CastFlags{Peek: kvany.PeekValuesCastToDefault}, int64(0))   // n.(int64)
+s, err := rec.VPeek("BCODE", kvany.CastFlags{Peek: kvany.PeekValuesCastToDefault,
+	String: kvany.CastStringOpt{Flags: kvany.CastStringAllTrim | kvany.CastStringPadL, Width: 15}}, "")
 ```
 
 `opt.Peek` drives the search: `PeekValuesCaseInsensitive` matches ignoring
 case; a repeated key is an error unless `PeekValuesDupeFirst` or
 `PeekValuesDupeLast` picks one, or `PeekValuesDupeArray` asks for all of
-them — then `defaultValue` must be a slice (or `nil`, for a `[]any`) and
-every value is cast to its element type (`[]int64{}` from `1.0`, `"2"`
-and `3` gives `[]int64{1, 2, 3}`). The other Peek flags (output case,
+them as a `[]any` (a single match too) - which cannot be cast, so it is
+incompatible with `CastToDefault`. The other Peek flags (output case,
 SkipNotFound) have no meaning here and are ignored. The rest of `opt` is
 the cast.

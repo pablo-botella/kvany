@@ -16,10 +16,11 @@ mkskill:
 - Empty or nil key_list → empty, non-nil result. Source never modified.
 - PeekValues* never convert: float64 numbers, wire strings for dates, nil
   for null. Conversion is Cast / VPeek only.
-- VPeek: absent key → defaultValue as given; found → Cast to the type of
-  defaultValue (nil default = untouched); repeated key → error unless
-  DupeFirst / DupeLast / DupeArray. DupeArray needs a slice default (or
-  nil → []any) and casts each value to its element type.
+- VPeek: absent key -> defaultValue as given; found -> the value as it
+  came, or Cast to the type of defaultValue with PeekValuesCastToDefault
+  (nil default = untouched); repeated key -> error unless DupeFirst /
+  DupeLast / DupeArray. DupeArray returns a []any and is incompatible with
+  CastToDefault.
 - Cast: nil like → V untouched; nil V → zero of the wanted type; the result
   has the exact type of like (named types included). Integers: truncate by
   default, Round or FractionError by flag; text parsed unless ErrOnString;
