@@ -5,8 +5,7 @@ import (
 	"fmt"
 )
 
-// MarshalJSON writes the pair as ["KEY", value]: the two-element array
-// that travels to Xbase++.
+// MarshalJSON writes the pair as ["KEY", value], a two-element array.
 func (kv Kv) MarshalJSON() ([]byte, error) {
 	return json.Marshal([2]any{kv.K, kv.V})
 }

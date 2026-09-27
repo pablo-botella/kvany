@@ -1,7 +1,7 @@
 // Package kvany holds key/value pairs whose values may be anything, kept
-// in the order they came: the Go side of the [["KEY", value], ...] arrays
-// that travel in JSON between Go and Xbase++ (ot4xb). Nothing is
-// normalized and nothing is deduplicated: a key may appear more than once.
+// in the order they came, with [["KEY", value], ...] as their JSON form.
+// Nothing is normalized and nothing is deduplicated: a key may appear
+// more than once.
 package kvany
 
 import (

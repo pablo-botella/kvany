@@ -1,9 +1,8 @@
 # kvany
 
 Key/value pairs whose values may be anything, kept **in the order they
-came** — the Go side of the `[["KEY", value], ...]` arrays that travel in
-JSON between Go and Xbase++ (ot4xb). Nothing is normalized and nothing is
-deduplicated: a key may appear more than once. Picking values out of the
+came**, with `[["KEY", value], ...]` as their JSON form. Nothing is
+normalized and nothing is deduplicated: a key may appear more than once. Picking values out of the
 list is a flag-driven question — which case, which repeat, what when absent —
 and turning a value into the type you want (a `float64` into an `int64`, a
 `"20260927"` into a `time.Time`) is a separate, explicit step.
@@ -128,15 +127,6 @@ a longer array, a key that is not a string) fails with a `kvany:` error. A
 `nil` list marshals as `[]`, never `null`, because the other side always
 expects an array; `null` unmarshals to a `nil` list and `[]` to an empty
 one. Values are whatever `encoding/json` makes of them.
-
-## What it deliberately does not do
-
-- **No key normalization.** Matching is exact unless you ask for
-  case-insensitive; the list keeps whatever spelling came in.
-- **No value conversion on its own.** Numbers stay `float64`, dates stay
-  whatever string the wire carried; `PeekValues*` return them untouched.
-  Coercion happens only when you ask for it, through `Cast` or `VPeek`.
-- **No locking.** A `Lst` is a slice; guard it as you would guard one.
 
 ## Install
 

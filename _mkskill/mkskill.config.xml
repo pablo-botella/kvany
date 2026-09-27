@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mkskill>
   <version-spec params="major:byte,minor:[0-99],build:word">
-    <version major="0" minor="0" build="4" lock="major">
-      <ts>2026-09-27T14:36:46Z</ts>
+    <version major="0" minor="0" build="5" lock="major">
+      <ts>2026-09-27T14:53:54Z</ts>
     </version>
-    <label key="title" volatile="true" default-to-ts="true">2026-09-27T14:36:46Z</label>
+    <label key="title" volatile="true" default-to-ts="true">2026-09-27T14:53:54Z</label>
     <create file="__publish.bat" git-ignore="true" eol="crlf">
 @echo off
 set TAG={$$$ version $$$}
@@ -22,10 +22,11 @@ exit /b 1
     <meta>
       <module>github.com/pablo-botella/kvany</module>
       <license>MIT</license>
-      <description>Key/value pairs with any value for Go, kept in the order they came — Kv{K string; V any}, Lst []Kv and PtrLst, the Go side of the [[&#34;KEY&#34;, value], ...] JSON arrays exchanged with Xbase++ (ot4xb); keys are not normalized and may repeat; PeekValuesToLst/PeekValuesToMap pick values out by flags (case, repeats, not-found), VPeek gets one value (cast to the type of its default on request), Kv.Cast converts a value to a sample type with options (integers, floats, strings, dates, bool), and the pairs marshal to and from their JSON array form. Use when working with github.com/pablo-botella/kvany.</description>
+      <description>Key/value pairs with any value for Go, kept in the order they came — Kv{K string; V any}, Lst []Kv and PtrLst, with [[&#34;KEY&#34;, value], ...] as their JSON form; keys are not normalized and may repeat; PeekValuesToLst/PeekValuesToMap pick values out by flags (case, repeats, not-found), VPeek gets one value (cast to the type of its default on request), Kv.Cast converts a value to a sample type with options (integers, floats, strings, dates, bool), and the pairs marshal to and from their JSON array form. Use when working with github.com/pablo-botella/kvany.</description>
     </meta>
   </project>
   <version-history max="10">
+    <release version="v0.0.5" ts="2026-09-27T14:53:54Z" title="2026-09-27T14:53:54Z" method="vinc-build"></release>
     <release version="v0.0.4" ts="2026-09-27T14:36:46Z" title="2026-09-27T14:36:46Z" method="vset"></release>
     <release version="v0.0.5" ts="2026-09-27T14:36:36Z" title="2026-09-27T14:36:36Z" method="vset"></release>
     <release version="v0.0.3" ts="2026-09-27T14:25:56Z" title="2026-09-27T14:25:56Z" method="vinc-build"></release>

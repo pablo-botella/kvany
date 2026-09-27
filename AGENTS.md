@@ -1,10 +1,9 @@
 # kvany — agent notes
 
 Go package `github.com/pablo-botella/kvany`: `Kv{K string; V any}` pairs,
-`Lst []Kv` and `PtrLst []*Kv`, kept in the order they came — the Go side of
-the `[["KEY", value], ...]` JSON arrays exchanged with Xbase++ (ot4xb). Keys
-are not normalized and may repeat; values are whatever `encoding/json`
-produced. Peeking values out is flag-driven (`PeekValues*`); `VPeek` gets
+`Lst []Kv` and `PtrLst []*Kv`, kept in the order they came, with
+`[["KEY", value], ...]` as their JSON form. Keys are not normalized and may
+repeat; values are whatever `encoding/json` produced. Peeking values out is flag-driven (`PeekValues*`); `VPeek` gets
 one value (cast to the type of its default on request); `Kv.Cast` is the
 conversion on its own; the types marshal to and from the wire form. No
 dependencies.
@@ -56,7 +55,7 @@ type CastFlags struct {
   decide it explicitly; DupeError fails naming the key and the count.
 - The case flags only matter with CaseInsensitive; every pair of one key
   carries the same output key (given, first found or last found).
-- Absent key: `Kv{key, nil}` (mpsetget style) unless SkipNotFound.
+- Absent key: `Kv{key, nil}` unless SkipNotFound.
 - Empty or nil key_list → empty, non-nil result. Source never modified.
 - PeekValues* never convert: float64 numbers, wire strings for dates, nil
   for null. Conversion is Cast / VPeek only.

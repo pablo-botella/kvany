@@ -12,7 +12,7 @@ mkskill:
   decide it explicitly; DupeError fails naming the key and the count.
 - The case flags only matter with CaseInsensitive; every pair of one key
   carries the same output key (given, first found or last found).
-- Absent key: `Kv{key, nil}` (mpsetget style) unless SkipNotFound.
+- Absent key: `Kv{key, nil}` unless SkipNotFound.
 - Empty or nil key_list → empty, non-nil result. Source never modified.
 - PeekValues* never convert: float64 numbers, wire strings for dates, nil
   for null. Conversion is Cast / VPeek only.
