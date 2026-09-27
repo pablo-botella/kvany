@@ -8,6 +8,7 @@ mkskill:
 
 - **No key normalization.** Matching is exact unless you ask for
   case-insensitive; the list keeps whatever spelling came in.
-- **No value conversion.** Numbers stay `float64`, dates stay whatever
-  string the wire carried. Coercion is the consumer's business.
+- **No value conversion on its own.** Numbers stay `float64`, dates stay
+  whatever string the wire carried; `PeekValues*` return them untouched.
+  Coercion happens only when you ask for it, through `Cast` or `VPeek`.
 - **No locking.** A `Lst` is a slice; guard it as you would guard one.

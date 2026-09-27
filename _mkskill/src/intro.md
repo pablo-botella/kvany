@@ -10,7 +10,9 @@ Key/value pairs whose values may be anything, kept **in the order they
 came** — the Go side of the `[["KEY", value], ...]` arrays that travel in
 JSON between Go and Xbase++ (ot4xb). Nothing is normalized and nothing is
 deduplicated: a key may appear more than once. Picking values out of the
-list is a flag-driven question — which case, which repeat, what when absent.
+list is a flag-driven question — which case, which repeat, what when absent —
+and turning a value into the type you want (a `float64` into an `int64`, a
+`"20260927"` into a `time.Time`) is a separate, explicit step.
 
 ```go
 rec := kvany.Lst{{K: "CODE", V: "AB12"}, {K: "QTY", V: 3.0}, {K: "code", V: "dup"}}

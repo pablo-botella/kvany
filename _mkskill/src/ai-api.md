@@ -13,16 +13,29 @@ type PtrLst []*Kv
 
 lst, err := l.PeekValuesToLst(keys []string, flags PeekValuesFlag)   // new Lst, source untouched
 m, err   := l.PeekValuesToMap(keys []string, flags PeekValuesFlag)   // the same folded into a map
+v, err   := l.VPeek(key string, opt CastFlags, defaultValue any)     // one value, cast to the default's type
+v, err   := kv.Cast(like any, opt CastFlags)                        // V as the type of like
 
 // PeekValuesFlag (bitmask, OR them):
 PeekValuesNone              // exact match, every repeat out, absent → Kv{key, nil}
 PeekValuesCaseInsensitive   // 0x01: EqualFold matching
-PeekValuesGivenCase         // 0x01: output key = the given one (default)
-PeekValuesFirstFoundCase    // 0x11: output key = first found spelling
-PeekValuesLastFoundCase     // 0x21: output key = last found spelling
+PeekValuesGivenCase         // 0x01: output key = the given one (default)   [ignored by VPeek]
+PeekValuesFirstFoundCase    // 0x11: output key = first found spelling      [ignored by VPeek]
+PeekValuesLastFoundCase     // 0x21: output key = last found spelling       [ignored by VPeek]
 PeekValuesDupeFirst         // 0x1000: repeated key → first value
 PeekValuesDupeLast          // 0x2000: repeated key → last value
-PeekValuesDupeArray         // 0x4000: repeated key → one pair, V = []any (single match too)
-PeekValuesDupeError         // 0x8000: repeated key → error
-PeekValuesSkipNotFound      // 0x10000: absent key adds nothing
+PeekValuesDupeArray         // 0x4000: repeated key → one pair, V = []any (VPeek: a slice of the default's type)
+PeekValuesDupeError         // 0x8000: repeated key → error (VPeek: the default when no Dupe flag)
+PeekValuesSkipNotFound      // 0x10000: absent key adds nothing               [ignored by VPeek]
+
+// CastFlags: one structure for Cast and VPeek, grouped by the type asked for
+type CastFlags struct {
+	Peek   PeekValuesFlag   // VPeek only
+	Int    CastIntOpt       // Flags: CastIntRound | CastIntFractionError | CastIntErrOnString | CastIntIsMask
+	Float  CastFloatOpt     // Flags: CastFloatErrOnString; Decimals int
+	String CastStringOpt    // Flags: CastStringLTrim | RTrim | AllTrim | PadL | PadR | Upper | Lower; Width, Fill, Decimals
+	Date   CastDateOpt      // In []string (layouts; default CastDateLayouts), Out string, Loc *time.Location
+}
+
+// JSON (marshall.go): Kv <-> ["KEY", value]; Lst / PtrLst <-> [["KEY", value], ...]; nil list -> []
 ```
